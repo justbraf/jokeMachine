@@ -1,5 +1,5 @@
 import express from 'express'
-import { PORT } from './config.js'
+import { PORT, JOKES } from './config.js'
 
 const app = express()
 
@@ -8,11 +8,27 @@ app.listen(PORT, () => {
 })
 
 app.get("/", (req, res) => {
-    res.send("Hello World")
+    res.send("Please check documentation for usage.")
 })
-app.get("/hello", (req, res) => {
-    res.status(200).json({
-        "firstname": "Bob",
-        "lastname": "Builder"
-    })
+app.get("/joke", (req, res) => {
+    let index = Math.floor(Math.random() * JOKES.length)
+    res.status(200).json(JOKES[index])
+})
+
+app.get("/joke/:id", (req, res) =>{
+    const jid = req.params.id
+    if (isNaN(jid)) {
+        res.status(200).json({
+            "error": "Invalid entry"
+        })
+        return
+    }
+    const found = JOKES.find((joke) => joke.id == jid)
+    if (!found){
+        res.status(200).json({
+            "error": "Invalid joke id"
+        })
+        return
+    }
+    res.status(200).json(found)
 })
