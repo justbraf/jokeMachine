@@ -19,11 +19,20 @@ app.listen(PORT, () => {
     console.info(`Server started on port ${PORT}`)
 })
 
-app.get('/sales', (req, res) => {
-    myCollection.find().count()
+app.get('/sales/:limit/:skip', (req, res) => {
+    const myLimit = Number(req.params.limit)
+    const mySkip = Number(req.params.skip)
+    myCollection.find({}, {limit: myLimit, skip: mySkip}).toArray()
     .then(resp=>{
-        console.log(resp)
-        res.sendStatus(200)
+        let docs = []
+        resp.forEach(elem=>{
+            delete elem.customer
+            delete elem.saleDate
+            elem.status = "sold"
+            // elem["status"] = "sold"
+            docs.push(elem)
+        })
+        res.status(200).json(docs)
     })
     .catch(err=>{
         console.log("an error occured", err)
