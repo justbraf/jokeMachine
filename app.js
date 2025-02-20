@@ -1,43 +1,14 @@
 import express from 'express'
-import { PORT, JOKES, MDBURI } from './config.js'
-import { MongoClient, ServerApiVersion } from "mongodb"
+import { PORT } from './config.js'
+import { addNewJoke } from './createUtil.js'
+import { getJokes } from './readUtils.js'
 
 const app = express()
 
-const client = new MongoClient(MDBURI, {
-    serverApi: {
-        version: ServerApiVersion.v1,
-        strict: true,
-        deprecationErrors: true,
-    }
-})
-
-const myDatabase = client.db("sample_supplies")
-const myCollection = myDatabase.collection("sales")
+app.use(express.json())
 
 app.listen(PORT, () => {
     console.info(`Server started on port ${PORT}`)
-})
-
-app.get('/sales/:limit/:skip', (req, res) => {
-    const myLimit = Number(req.params.limit)
-    const mySkip = Number(req.params.skip)
-    myCollection.find({}, {limit: myLimit, skip: mySkip}).toArray()
-    .then(resp=>{
-        let docs = []
-        resp.forEach(elem=>{
-            delete elem.customer
-            delete elem.saleDate
-            elem.status = "sold"
-            // elem["status"] = "sold"
-            docs.push(elem)
-        })
-        res.status(200).json(docs)
-    })
-    .catch(err=>{
-        console.log("an error occured", err)
-        res.sendStatus(500)
-    })
 })
 
 app.get("/", (req, res) => {
@@ -65,4 +36,13 @@ app.get("/joke/:id", (req, res) => {
         return
     }
     res.status(200).json(found)
+})
+
+app.post("/new", (req, res) => {
+    const data = req.body
+    addNewJoke(res, data)
+})
+
+app.get("/jokes", (req, res) => {
+    getJokes(res)
 })
