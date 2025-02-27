@@ -2,6 +2,7 @@ import express from 'express'
 import { PORT } from './config.js'
 import { addNewJoke } from './createUtil.js'
 import { getJokes } from './readUtils.js'
+import { delJoke } from './deleteUtils.js'
 
 const app = express()
 
@@ -45,4 +46,15 @@ app.post("/new", (req, res) => {
 
 app.get("/jokes", (req, res) => {
     getJokes(res)
+})
+
+app.delete("/remove/id/:id", (req, res) => {
+    let data = {}
+    data.id = Number(req.params.id)
+    delJoke(res, data)
+})
+app.delete("/remove/_id/:id", (req, res) => {
+    let data = {}
+    data._id = req.params.id
+    delJoke(res, data)
 })
