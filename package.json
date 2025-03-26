@@ -13,6 +13,7 @@
   "license": "ISC",
   "description": "Backend for a joke generator",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "mongodb": "^6.12.0"
   },
