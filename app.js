@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { PORT } from './config.js'
 import { addNewJoke } from './createUtil.js'
-import { getJokes } from './readUtils.js'
+import { getJoke, getJokes } from './readUtils.js'
 import { delJoke } from './deleteUtils.js'
 import { updateJoke } from './updateUtils.js'
 
@@ -32,14 +32,7 @@ app.get("/joke/:id", (req, res) => {
         })
         return
     }
-    const found = JOKES.find((joke) => joke.id == jid)
-    if (!found) {
-        res.status(200).json({
-            "error": "Invalid joke id"
-        })
-        return
-    }
-    res.status(200).json(found)
+    getJoke(res, Number(jid))
 })
 
 app.post("/new", (req, res) => {
@@ -62,7 +55,7 @@ app.delete("/remove/_id/:id", (req, res) => {
     delJoke(res, data)
 })
 
-app.put('/update/:id', (req, res)=>{
+app.put('/update/:id', (req, res) => {
     const data = req.body
     updateJoke(res, data, req.params.id)
 })
