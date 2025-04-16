@@ -15,6 +15,9 @@ let addNewJoke = (res, data) => {
                 // res.status(200).json(data)
                 insertDoc(res, data)
             })
+            .catch(err => {
+                res.status(200).json({ "error": err.message })
+            })
     }
     else
         insertDoc(res, data)

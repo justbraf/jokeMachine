@@ -15,6 +15,9 @@ let delJoke = (res, data) => {
                 result.error = "Error Occured"
             res.status(200).json(result)
         })
+        .catch(err => {
+            res.status(200).json({ "error": err.message })
+        })
 }
 
 export { delJoke }
