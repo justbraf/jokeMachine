@@ -4,7 +4,7 @@ import { PORT } from './config.js'
 import { addNewJoke } from './createUtil.js'
 import { getJoke, getJokes } from './readUtils.js'
 import { delJoke } from './deleteUtils.js'
-import { updateJoke } from './updateUtils.js'
+import { updateJoke, updateRating } from './updateUtils.js'
 
 const app = express()
 
@@ -58,4 +58,11 @@ app.delete("/remove/_id/:id", (req, res) => {
 app.put('/update/:id', (req, res) => {
     const data = req.body
     updateJoke(res, data, req.params.id)
+})
+
+app.get('/rate/:id/:thumbs', (req, res) => {
+    const id = req.params.id
+    const thumbs = req.params.id
+
+    updateRating(res, id, thumbs)
 })
