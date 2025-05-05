@@ -60,9 +60,9 @@ app.put('/update/:id', (req, res) => {
     updateJoke(res, data, req.params.id)
 })
 
-app.get('/rate/:id/:thumbs', (req, res) => {
+// Route for updating the likes of a joke by its id
+app.put('/rate/:id/:thumbs', (req, res) => {
     const id = req.params.id
-    const thumbs = req.params.id
-
+    const thumbs = req.params.thumbs
     updateRating(res, id, thumbs)
 })

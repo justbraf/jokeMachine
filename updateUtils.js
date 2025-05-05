@@ -18,11 +18,12 @@ const updateJoke = (res, data, id) => {
 const updateRating = (res, id, thumbs) => {
     id = Number(id)
     let val = 0
+    // Check if it is a thumbs up (add one) or thumbs down (subtract one), anything else should not change the value
     if (thumbs == "up")
         val = 1
     else if (thumbs == "down")
         val = -1
-
+    // The $inc operator updates the specified field by the provided value
     myJokesColl.updateOne({ "id": id }, {
         $inc: { likes: val }
     })
